@@ -40,10 +40,10 @@ class JWTAuth
     protected $token;
 
     /**
-     * @param \Tymon\JWTAuth\JWTManager                   $manager
+     * @param \Tymon\JWTAuth\JWTManager $manager
      * @param \Tymon\JWTAuth\Providers\User\UserInterface $user
      * @param \Tymon\JWTAuth\Providers\Auth\AuthInterface $auth
-     * @param \Illuminate\Http\Request                    $request
+     * @param \Illuminate\Http\Request $request
      */
     public function __construct(JWTManager $manager, UserInterface $user, AuthInterface $auth, Request $request)
     {
@@ -64,7 +64,7 @@ class JWTAuth
     {
         $payload = $this->getPayload($token);
 
-        if (! $user = $this->user->getBy($this->identifier, $payload['sub'])) {
+        if (!$user = $this->user->getBy($this->identifier, $payload['sub'])) {
             return false;
         }
 
@@ -96,7 +96,7 @@ class JWTAuth
      */
     public function attempt(array $credentials = [], array $customClaims = [])
     {
-        if (! $this->auth->byCredentials($credentials)) {
+        if (!$this->auth->byCredentials($credentials)) {
             return false;
         }
 
@@ -114,7 +114,7 @@ class JWTAuth
     {
         $id = $this->getPayload($token)->get('sub');
 
-        if (! $this->auth->byId($id)) {
+        if (!$this->auth->byId($id)) {
             return false;
         }
 
@@ -156,7 +156,7 @@ class JWTAuth
      */
     public function getToken()
     {
-        if (! $this->token) {
+        if (!$this->token) {
             try {
                 $this->parseToken();
             } catch (JWTException $e) {
@@ -190,8 +190,8 @@ class JWTAuth
      */
     public function parseToken($method = 'bearer', $header = 'authorization', $query = 'token')
     {
-        if (! $token = $this->parseAuthHeader($header, $method)) {
-            if (! $token = $this->request->query($query, false)) {
+        if (!$token = $this->parseAuthHeader($header, $method)) {
+            if (!$token = $this->request->query($query, false)) {
                 throw new JWTException('The token could not be parsed from the request', 400);
             }
         }
@@ -211,7 +211,7 @@ class JWTAuth
     {
         $header = $this->request->headers->get($header);
 
-        if (! starts_with(strtolower($header), $method)) {
+        if (!starts_with(strtolower($header), $method)) {
             return false;
         }
 
@@ -282,7 +282,7 @@ class JWTAuth
      */
     protected function requireToken($token)
     {
-        if (! $token = $token ?: $this->token) {
+        if (!$token = $token ?: $this->token) {
             throw new JWTException('A token is required', 400);
         }
 
@@ -315,7 +315,7 @@ class JWTAuth
      * Magically call the JWT Manager.
      *
      * @param string $method
-     * @param array  $parameters
+     * @param array $parameters
      *
      * @return mixed
      *
